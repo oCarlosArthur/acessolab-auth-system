@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07182c">
+  <title>AcessoLab | Autenticação e Autorização</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container header-content">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">⌘</span><span>Acesso<span class="brand-accent">Lab</span></span></div>
+      <div class="header-right"><span class="header-tag">TDE · SEGURANÇA WEB</span><span class="connection"><span class="connection-dot"></span> Servidor local</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="small-spark">✦</span> LABORATÓRIO INTERATIVO DE SEGURANÇA</div>
+        <h1>Quem pode <span>entrar?</span><br>Quem pode <span>acessar?</span></h1>
+        <p>Explore autenticação, sessões e controle de permissões em um sistema web real. Faça requisições, teste diferentes perfis e veja a resposta do servidor.</p>
+        <div class="hero-tags"><span>Node.js</span><span>Senhas protegidas</span><span>Controle por papéis</span></div>
+      </div>
+      <div class="hero-panel" aria-label="Exemplo de resposta HTTP">
+        <div class="mini-window-bar"><span class="mini-dots"><i></i><i></i><i></i></span><span>access-control.js</span><span>● LIVE</span></div>
+        <div class="mini-code"><div><span class="ln">01</span><span class="keyword">function</span> <span class="func">autorizar</span>(usuario) {</div><div><span class="ln">02</span>  <span class="keyword">if</span> (!usuario) <span class="warning">return 401</span>;</div><div><span class="ln">03</span>  <span class="keyword">if</span> (usuario.papel !== <span class="string">'admin'</span>)</div><div><span class="ln">04</span>    <span class="warning">return 403</span>;</div><div><span class="ln">05</span>  <span class="success">return 200</span>;</div><div><span class="ln">06</span>}</div></div>
+        <div class="mini-footer"><span>● autenticação</span><span>● autorização</span><span>● sessão</span></div>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <div class="workspace-head"><div><div class="section-eyebrow">ÁREA DE TESTES</div><h2>Explore o sistema</h2></div><div class="identity" id="identity"><span class="avatar" id="avatar">?</span><span><small>Perfil atual</small><strong id="current-profile">Visitante</strong></span></div></div>
+      <nav class="tabs" aria-label="Navegação do projeto">
+        <button class="tab active" type="button" data-view-target="overview">Visão geral</button>
+        <button class="tab" type="button" data-view-target="login" data-guest>Entrar</button>
+        <button class="tab" type="button" data-view-target="register" data-guest>Criar conta</button>
+        <button class="tab" type="button" data-view-target="dashboard" data-auth hidden>Meu painel</button>
+        <button class="tab" type="button" data-view-target="admin" data-admin hidden>Administração</button>
+        <button class="logout" type="button" id="logout-btn" hidden>Sair da conta ↗</button>
+      </nav>
+
+      <section class="view active" id="view-overview">
+        <div class="section-intro"><h3>Teste o controle de acesso</h3><p>Cada botão faz uma requisição verdadeira ao servidor. Compare o resultado antes e depois de efetuar o login.</p></div>
+        <div class="route-grid">
+          <article class="route-card"><div class="route-top"><span class="route-icon purple">◎</span><span class="type-pill">PÚBLICO</span></div><h4>Área pública</h4><p>Disponível para qualquer pessoa, mesmo sem estar conectada.</p><code>GET /api/publico</code><button class="action-secondary" type="button" data-test="/api/publico">Testar acesso <span>→</span></button></article>
+          <article class="route-card"><div class="route-top"><span class="route-icon blue">♙</span><span class="type-pill">AUTENTICAÇÃO</span></div><h4>Painel do usuário</h4><p>Exige uma sessão autenticada, independentemente do perfil.</p><code>GET /api/painel</code><button class="action-secondary" type="button" data-test="/api/painel">Testar acesso <span>→</span></button></article>
+          <article class="route-card"><div class="route-top"><span class="route-icon amber">♛</span><span class="type-pill">AUTORIZAÇÃO</span></div><h4>Área administrativa</h4><p>Além do login, exige explicitamente o papel de administrador.</p><code>GET /api/admin/usuarios</code><button class="action-secondary" type="button" data-test="/api/admin/usuarios">Testar acesso <span>→</span></button></article>
+        </div>
+        <div class="legend"><span><b class="status-200">200</b> Acesso concedido</span><span><b class="status-401">401</b> Não autenticado</span><span><b class="status-403">403</b> Sem permissão</span></div>
+      </section>
+
+      <section class="view" id="view-login" hidden>
+        <div class="form-layout"><div class="form-intro"><span class="large-symbol">◈</span><h3>Bem-vindo de volta.</h3><p>Informe suas credenciais para comprovar sua identidade. Se estiverem corretas, o servidor criará uma sessão autenticada.</p><div class="tip">O navegador recebe apenas um cookie de sessão. Sua senha não fica armazenada no frontend.</div></div>
+        <form id="login-form" class="auth-form"><div class="form-title">Entrar na sua conta</div><label for="login-email">E-mail</label><input id="login-email" type="email" name="email" placeholder="seuemail@exemplo.com" autocomplete="username" required maxlength="160"><label for="login-password">Senha</label><input id="login-password" type="password" name="senha" placeholder="Sua senha" autocomplete="current-password" required><button class="primary-btn" type="submit">Entrar com segurança →</button><p class="auth-hint">Ainda não possui conta? <button type="button" class="text-link" data-view-target="register">Cadastre-se</button></p></form></div>
+      </section>
+
+      <section class="view" id="view-register" hidden>
+        <div class="form-layout"><div class="form-intro"><span class="large-symbol">✧</span><h3>Crie sua identidade.</h3><p>Registre uma conta de aluno. A senha será transformada em um hash criptográfico antes do armazenamento.</p><div class="tip">Por segurança, o cadastro público nunca permite escolher o papel de administrador.</div></div>
+        <form id="register-form" class="auth-form"><div class="form-title">Criar conta de aluno</div><label for="register-name">Nome completo</label><input id="register-name" type="text" name="nome" placeholder="Seu nome" minlength="2" maxlength="60" autocomplete="name" required><label for="register-email">E-mail</label><input id="register-email" type="email" name="email" placeholder="seuemail@exemplo.com" autocomplete="username" maxlength="160" required><label for="register-password">Senha</label><input id="register-password" type="password" name="senha" placeholder="Mínimo de 10 caracteres" minlength="10" maxlength="128" autocomplete="new-password" required><button class="primary-btn" type="submit">Criar conta →</button><p class="auth-hint">Já tem cadastro? <button type="button" class="text-link" data-view-target="login">Faça login</button></p></form></div>
+      </section>
+
+      <section class="view" id="view-dashboard" hidden>
+        <div class="dashboard-banner"><span class="large-symbol">✓</span><div><span class="section-eyebrow">AUTENTICAÇÃO CONFIRMADA</span><h3 id="welcome-heading">Acesso autorizado ao painel</h3><p id="welcome-copy">Seu login permite visualizar esta área restrita.</p></div></div>
+        <div class="dash-grid"><div class="dash-box"><span class="dash-label">IDENTIDADE</span><strong id="dash-name">—</strong><span id="dash-email">—</span></div><div class="dash-box"><span class="dash-label">PAPEL NO SISTEMA</span><strong id="dash-role">—</strong><span>Validado pelo servidor</span></div><div class="dash-box"><span class="dash-label">SESSÃO</span><strong>Ativa</strong><span>Cookie HttpOnly</span></div></div>
+        <button class="primary-btn inline-btn" type="button" data-test="/api/painel">Consultar minha rota protegida →</button>
+      </section>
+
+      <section class="view" id="view-admin" hidden>
+        <div class="section-intro"><span class="section-eyebrow">ACESSO EXCLUSIVO</span><h3>Administração de usuários</h3><p>Lista obtida da rota <code>/api/admin/usuarios</code>, protegida pelo papel <strong>admin</strong> no servidor.</p></div>
+        <div class="admin-summary"><span>Contas cadastradas</span><strong id="admin-total">—</strong><button class="action-secondary" type="button" id="refresh-admin">Atualizar lista ↻</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Papel</th><th>Cadastro</th></tr></thead><tbody id="admin-users"></tbody></table></div>
+      </section>
+
+      <section class="console-section"><div class="console-head"><div><span class="section-eyebrow">DEBUG EM TEMPO REAL</span><h3>Respostas do servidor</h3></div><button type="button" class="clear-btn" id="clear-log">Limpar histórico</button></div><div class="console-grid"><div class="console-log" id="request-log"><div class="empty-log">Nenhuma requisição de teste ainda.</div></div><div class="response-panel"><span class="response-title">ÚLTIMA RESPOSTA</span><pre id="response-preview">Selecione uma das rotas acima para testar o acesso.</pre></div></div></section>
+    </div>
+
+    <footer><span>⌘ AcessoLab</span><span>Projeto acadêmico • Autenticação e autorização • Demonstração local</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

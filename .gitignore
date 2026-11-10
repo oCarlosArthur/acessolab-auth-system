@@ -1,0 +1,10 @@
+/data/*.json
+node_modules/
+.env
+.DS_Store
+
+# Credenciais, arquivos locais e artefatos temporarios
+.env.*
+!.env.example
+*.log
+/data/*.tmp
